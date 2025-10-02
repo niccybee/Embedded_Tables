@@ -1,7 +1,7 @@
 <template>
   <div class="demo-container">
     <h1 class="main-heading">E2 Pricing Tables Demo</h1>
-    
+
     <!-- Navigation Section -->
     <div class="navigation-section">
       <div class="nav-card">
@@ -13,7 +13,7 @@
           Open Builder
         </NuxtLink>
       </div>
-      
+
       <div class="nav-card">
         <h3 class="nav-title">📋 Documentation</h3>
         <p class="nav-description">
@@ -24,7 +24,7 @@
         </button>
       </div>
     </div>
-    
+
     <div class="demo-content" id="documentation">
       <h2 class="section-heading">Embeddable Pricing Table</h2>
       <p class="section-description">
@@ -34,10 +34,12 @@
       <div class="params-section">
         <h3 class="subsection-heading">Available Query Parameters:</h3>
         <ul class="params-list">
-          <li><strong>course:</strong> IELTS Academic, IELTS General, PTE Academic, PTE Core, TOEFL, CELPIP LS, CELPIP, OET Nurses, OET Doctors</li>
+          <li><strong>course:</strong> IELTS Academic, IELTS General, PTE Academic, PTE Core, TOEFL, CELPIP LS, CELPIP,
+            OET Nurses, OET Doctors</li>
           <li><strong>discountCode:</strong> Any discount code (e.g., INVEST25, SAVE20, STUDENT15, EARLY30)</li>
           <li><strong>affiliateCode:</strong> Affiliate ID for tracking</li>
-          <li><strong>displayedPackages:</strong> Comma-separated list: Express, Express Plus, 4-Week Intensive, Bronze, Silver, Gold</li>
+          <li><strong>displayedPackages:</strong> Comma-separated list: Express, Express Plus, 4-Week Intensive, Bronze,
+            Silver, Gold</li>
         </ul>
       </div>
 
@@ -45,20 +47,20 @@
         <h3 class="subsection-heading">Example URLs:</h3>
         <div class="examples-list">
           <div>
-            <a href="/embed?course=IELTS Academic&discountCode=INVEST25&affiliateCode=ABC123" 
-               class="example-link" target="_blank">
+            <a href="/embed?course=IELTS Academic&discountCode=INVEST25&affiliateCode=ABC123" class="example-link"
+              target="_blank">
               Full IELTS Academic with 25% discount
             </a>
           </div>
           <div>
-            <a href="/embed?course=PTE Academic&displayedPackages=Bronze,Silver,Gold" 
-               class="example-link" target="_blank">
+            <a href="/embed?course=PTE Academic&displayedPackages=Bronze,Silver,Gold" class="example-link"
+              target="_blank">
               PTE Academic - Only Bronze, Silver, Gold packages
             </a>
           </div>
           <div>
-            <a href="/embed?course=TOEFL&discountCode=SAVE20&displayedPackages=Express,Express Plus" 
-               class="example-link" target="_blank">
+            <a href="/embed?course=TOEFL&discountCode=SAVE20&displayedPackages=Express,Express Plus"
+              class="example-link" target="_blank">
               TOEFL - Express packages only with 20% discount
             </a>
           </div>
@@ -67,11 +69,8 @@
 
       <div class="preview-section">
         <h3 class="subsection-heading">Live Preview:</h3>
-        <iframe 
-          src="/embed?course=IELTS General&discountCode=INVEST25&affiliateCode=DEMO123"
-          class="preview-iframe"
-          title="Pricing Table Preview"
-        ></iframe>
+        <iframe src="/embed?course=IELTS General&discountCode=INVEST25&affiliateCode=DEMO123" class="preview-iframe"
+          title="Pricing Table Preview"></iframe>
       </div>
 
       <div class="embed-code-section">
@@ -247,7 +246,7 @@ const scrollToDocumentation = () => {
   font-size: 0.875rem;
 }
 
-.examples-list > div {
+.examples-list>div {
   margin-bottom: 0.5rem;
 }
 
