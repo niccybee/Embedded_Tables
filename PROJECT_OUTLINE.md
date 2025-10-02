@@ -5,14 +5,16 @@
 **Project Name:** E2 Embeddable Pricing Tables  
 **Project Type:** Frontend Web Component Development  
 **Framework:** Nuxt 4 + Vue 3 + TypeScript  
-**Status:** Prototype Complete - Ready for Production Implementation  
+**Status:** Prototype Complete - Ready for Production Implementation
 
 ## Business Requirements
 
 ### Primary Objective
+
 Create embeddable pricing tables that can be integrated into any website via iframe embedding, with dynamic customization through URL query parameters.
 
 ### Key Business Goals
+
 - Enable third-party websites to embed E2 pricing tables seamlessly
 - Provide flexible pricing display options based on course type and promotional campaigns
 - Support affiliate tracking and conversion attribution
@@ -22,6 +24,7 @@ Create embeddable pricing tables that can be integrated into any website via ifr
 ## Technical Specification
 
 ### Architecture Overview
+
 - **Frontend Framework:** Nuxt 4.1.2 with Vue 3 Composition API
 - **Language:** TypeScript for type safety and developer experience
 - **Styling:** Custom CSS utility system (Tailwind-like approach)
@@ -31,9 +34,11 @@ Create embeddable pricing tables that can be integrated into any website via ifr
 ### Core Components
 
 #### 1. PricingTable Component (`components/PricingTable.vue`)
+
 **Purpose:** Main container orchestrating pricing display logic
 
 **Key Features:**
+
 - Query parameter processing and validation
 - Discount code calculation (up to 30% off)
 - Package filtering based on business rules
@@ -41,19 +46,22 @@ Create embeddable pricing tables that can be integrated into any website via ifr
 - Affiliate tracking integration
 
 **Props Interface:**
+
 ```typescript
 interface QueryParams {
-  course: CourseType
-  discountCode?: string
-  affiliateCode?: string
-  displayedPackages?: string[]
+  course: CourseType;
+  discountCode?: string;
+  affiliateCode?: string;
+  displayedPackages?: string[];
 }
 ```
 
 #### 2. PricingCard Component (`components/PricingCard.vue`)
+
 **Purpose:** Individual package display with color theming
 
 **Key Features:**
+
 - 7 distinct color schemes for package differentiation
 - Responsive card layout with feature lists
 - Upgrade button with payment integration hooks
@@ -61,6 +69,7 @@ interface QueryParams {
 - Feature highlighting and CTAs
 
 **Color Schemes:**
+
 - Orange (Bronze packages)
 - Blue (Silver packages)
 - Yellow (Gold packages)
@@ -72,18 +81,22 @@ interface QueryParams {
 ### API Endpoints
 
 #### 3. Embed Route (`pages/embed.vue`)
+
 **Purpose:** Main embeddable endpoint for iframe integration
 
 **Query Parameters:**
+
 - `course` (required): Course type selection
-- `discountCode` (optional): Promotional discount application  
+- `discountCode` (optional): Promotional discount application
 - `affiliateCode` (optional): Partner tracking identifier
 - `displayedPackages` (optional): Package filtering
 
 #### 4. Demo Route (`pages/index.vue`)
+
 **Purpose:** Documentation and testing interface
 
 **Features:**
+
 - Live iframe preview
 - Embedding code generation
 - Parameter testing interface
@@ -92,9 +105,11 @@ interface QueryParams {
 ## Functional Requirements
 
 ### Course Type Support
+
 System must support all E2 course offerings:
+
 1. IELTS Academic
-2. IELTS General  
+2. IELTS General
 3. PTE Academic
 4. PTE Core
 5. TOEFL
@@ -104,7 +119,9 @@ System must support all E2 course offerings:
 9. OET Doctors
 
 ### Package Types
+
 System must display the following package options:
+
 1. **Express** - 1 Month Access, Basic tutorials
 2. **Express Plus** - 3 Month Access, Enhanced tutorials
 3. **4-Week Intensive** - 4 Week Access, Speaking/Writing specialization
@@ -113,12 +130,14 @@ System must display the following package options:
 6. **Gold** - 12 Month Access, Premium features
 
 ### Discount Code System
+
 - Automatic percentage calculation from code name
 - Maximum 30% discount enforcement
 - Support for promotional campaigns
 - Integration with affiliate tracking
 
 ### Package Filtering
+
 - Comma-separated package selection
 - Dynamic visibility control
 - Maintains responsive layout
@@ -127,12 +146,14 @@ System must display the following package options:
 ## Technical Requirements
 
 ### Performance
+
 - **Load Time:** < 2 seconds initial render
 - **Bundle Size:** < 500KB total JavaScript
 - **Mobile Performance:** 90+ Lighthouse score
 - **SEO Optimization:** Server-side rendering support
 
 ### Browser Compatibility
+
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
@@ -141,12 +162,14 @@ System must display the following package options:
 - Chrome Mobile Android 10+
 
 ### Responsive Design
+
 - **Desktop:** 1200px+ (grid layout)
 - **Tablet:** 768px-1199px (2-column grid)
 - **Mobile:** < 768px (single column stack)
 - **Iframe Constraints:** Minimum 300px width support
 
 ### Security & Integration
+
 - **CSP Compatibility:** Works within Content Security Policy restrictions
 - **CORS Configuration:** Proper cross-origin embedding support
 - **XSS Prevention:** Input sanitization for all query parameters
@@ -155,17 +178,21 @@ System must display the following package options:
 ## Implementation Tasks
 
 ### Phase 1: Core Development (Estimated: 5-8 days)
+
 1. **Component Architecture** (2 days)
+
    - Create PricingTable and PricingCard components
    - Implement TypeScript interfaces and props validation
    - Set up Vue 3 composition API structure
 
 2. **Query Parameter System** (2 days)
+
    - Implement route parameter parsing
    - Add validation for course types and package names
    - Create discount code calculation logic
 
 3. **Responsive Design Implementation** (2-3 days)
+
    - Develop CSS utility system
    - Implement responsive grid layouts
    - Create color theming system for packages
@@ -177,12 +204,15 @@ System must display the following package options:
    - Affiliate code handling
 
 ### Phase 2: Testing & Optimization (Estimated: 3-5 days)
+
 1. **Cross-Browser Testing** (2 days)
+
    - Test iframe embedding across different browsers
    - Validate responsive behavior
    - Performance optimization
 
 2. **Integration Testing** (2 days)
+
    - Test query parameter combinations
    - Validate discount calculations
    - Verify affiliate tracking
@@ -194,7 +224,9 @@ System must display the following package options:
    - SEO meta tag configuration
 
 ### Phase 3: Documentation & Deployment (Estimated: 2-3 days)
+
 1. **Documentation** (1 day)
+
    - API documentation for embedding
    - Integration guide for partners
    - Troubleshooting guide
@@ -207,6 +239,7 @@ System must display the following package options:
 ## Acceptance Criteria
 
 ### Functional Criteria
+
 - [ ] All 9 course types display correctly with appropriate content
 - [ ] Discount codes calculate percentages accurately (max 30%)
 - [ ] Package filtering works with comma-separated values
@@ -215,6 +248,7 @@ System must display the following package options:
 - [ ] Iframe embedding functions across different websites
 
 ### Technical Criteria
+
 - [ ] Bundle size under 500KB
 - [ ] Load time under 2 seconds
 - [ ] 90+ Lighthouse performance score on mobile
@@ -223,6 +257,7 @@ System must display the following package options:
 - [ ] CSP and CORS compatibility confirmed
 
 ### Business Criteria
+
 - [ ] Brand consistency maintained across all variations
 - [ ] Payment integration hooks ready for implementation
 - [ ] Analytics tracking capabilities implemented
@@ -232,6 +267,7 @@ System must display the following package options:
 ## Risks & Mitigation
 
 ### Technical Risks
+
 1. **Browser Compatibility Issues**
    - Mitigation: Comprehensive testing matrix, polyfill implementation
 2. **Performance on Mobile**
@@ -240,6 +276,7 @@ System must display the following package options:
    - Mitigation: CSP testing, sandbox attribute configuration
 
 ### Business Risks
+
 1. **Integration Complexity for Partners**
    - Mitigation: Comprehensive documentation, code examples, support process
 2. **Discount Code Abuse**
@@ -248,12 +285,14 @@ System must display the following package options:
 ## Success Metrics
 
 ### Performance Metrics
+
 - Page load time < 2 seconds
 - Mobile performance score > 90
 - Zero critical accessibility issues
 - Cross-browser compatibility 100%
 
 ### Business Metrics
+
 - Partner adoption rate
 - Conversion rate through embedded tables
 - Mobile vs desktop engagement
@@ -262,12 +301,14 @@ System must display the following package options:
 ## Dependencies
 
 ### External Dependencies
+
 - Payment gateway integration (Stripe/PayPal)
 - Analytics platform (Google Analytics/Mixpanel)
 - CDN for static asset delivery
 - Monitoring and error tracking (Sentry)
 
 ### Internal Dependencies
+
 - Brand guidelines and color palette
 - Current pricing structure and packages
 - Affiliate tracking system
@@ -278,19 +319,21 @@ System must display the following package options:
 **Total Development Time:** 10-16 days  
 **Testing & QA:** 3-5 days  
 **Documentation:** 2-3 days  
-**Deployment & Launch:** 1-2 days  
+**Deployment & Launch:** 1-2 days
 
 **Total Project Timeline:** 16-26 business days (3.5-5 weeks)
 
 ## Post-Launch Considerations
 
 ### Maintenance
+
 - Regular browser compatibility testing
 - Performance monitoring and optimization
 - Security updates and vulnerability patches
 - Feature enhancements based on partner feedback
 
 ### Analytics & Monitoring
+
 - Conversion tracking through embedded tables
 - Performance monitoring across different embedding contexts
 - Error tracking and user experience analytics

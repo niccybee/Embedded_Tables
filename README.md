@@ -14,27 +14,32 @@ This Nuxt 4 project creates embeddable pricing tables that can be customized thr
 ## Query Parameters
 
 ### Course (required)
+
 - `course`: The type of course/test preparation
 - Valid values: `IELTS Academic`, `IELTS General`, `PTE Academic`, `PTE Core`, `TOEFL`, `CELPIP LS`, `CELPIP`, `OET Nurses`, `OET Doctors`
 
 ### Discount Code (optional)
+
 - `discountCode`: Apply a discount code (examples: `INVEST25`, `SAVE20`, `STUDENT15`, `EARLY30`)
 - Automatically calculates percentage discount (max 30%)
 
 ### Affiliate Code (optional)
+
 - `affiliateCode`: Affiliate tracking ID for conversion tracking
 
 ### Displayed Packages (optional)
+
 - `displayedPackages`: Comma-separated list of packages to display
 - Valid packages: `Express`, `Express Plus`, `4-Week Intensive`, `Bronze`, `Silver`, `Gold`
 
 ## Usage Examples
 
 ### Basic Embedding
+
 ```html
-<iframe 
+<iframe
   src="https://your-domain.com/embed?course=IELTS General"
-  width="100%" 
+  width="100%"
   height="800"
   frameborder="0"
   title="E2 Pricing Table"
@@ -42,10 +47,11 @@ This Nuxt 4 project creates embeddable pricing tables that can be customized thr
 ```
 
 ### With Discount Code
+
 ```html
-<iframe 
+<iframe
   src="https://your-domain.com/embed?course=IELTS Academic&discountCode=INVEST25&affiliateCode=ABC123"
-  width="100%" 
+  width="100%"
   height="800"
   frameborder="0"
   title="E2 Pricing Table"
@@ -53,10 +59,11 @@ This Nuxt 4 project creates embeddable pricing tables that can be customized thr
 ```
 
 ### Filtered Packages
+
 ```html
-<iframe 
+<iframe
   src="https://your-domain.com/embed?course=PTE Academic&displayedPackages=Bronze,Silver,Gold"
-  width="100%" 
+  width="100%"
   height="800"
   frameborder="0"
   title="E2 Pricing Table"
@@ -66,7 +73,7 @@ This Nuxt 4 project creates embeddable pricing tables that can be customized thr
 ## Available Packages
 
 - **Express**: 1 Month Access - Basic tutorial package
-- **Express Plus**: 3 Month Access - Enhanced tutorial package  
+- **Express Plus**: 3 Month Access - Enhanced tutorial package
 - **4-Week Intensive**: 4 Week Access - Specialized intensive courses
 - **Bronze**: 3 Month Access - Interactive learning with feedback
 - **Silver**: 6 Month Access - Committed learning with teacher guidance
@@ -75,6 +82,7 @@ This Nuxt 4 project creates embeddable pricing tables that can be customized thr
 ## Development
 
 ### Setup
+
 ```bash
 # Install dependencies
 bun install
@@ -84,6 +92,7 @@ bun dev
 ```
 
 ### Build for Production
+
 ```bash
 # Build the application
 bun build
