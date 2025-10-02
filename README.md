@@ -101,7 +101,24 @@ bun build
 bun preview
 ```
 
+## Builder Tool
+
+The project includes an interactive builder tool at `/builder` that helps users create custom pricing table configurations with live preview.
+
+### Features
+
+- **Visual Configuration**: Select course type, discount codes, and packages through a user-friendly interface
+- **Live Preview**: See changes instantly in an embedded iframe preview
+- **URL Generation**: Automatically generates embed URLs and direct links
+- **Copy to Clipboard**: Easy copying of URLs and embed code
+- **Responsive Design**: Works on all device sizes
+
+### Access the Builder
+
+Visit `http://localhost:3000/builder` to access the interactive builder tool.
+
 ## Demo
 
-Visit the homepage at `http://localhost:3000` to see live examples and embedding code.
-Visit the embed page at `http://localhost:3000/embed?course=IELTS Academic` to see the embeddable table directly.
+- **Homepage**: `http://localhost:3000` - Overview and documentation
+- **Builder Tool**: `http://localhost:3000/builder` - Interactive configuration tool with live preview
+- **Direct Embed**: `http://localhost:3000/embed?course=IELTS Academic` - Direct embeddable table view

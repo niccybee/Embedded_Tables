@@ -2,7 +2,30 @@
   <div class="demo-container">
     <h1 class="main-heading">E2 Pricing Tables Demo</h1>
     
-    <div class="demo-content">
+    <!-- Navigation Section -->
+    <div class="navigation-section">
+      <div class="nav-card">
+        <h3 class="nav-title">🛠️ Builder Tool</h3>
+        <p class="nav-description">
+          Interactive tool to build and customize your pricing table with live preview
+        </p>
+        <NuxtLink to="/builder" class="nav-button primary">
+          Open Builder
+        </NuxtLink>
+      </div>
+      
+      <div class="nav-card">
+        <h3 class="nav-title">📋 Documentation</h3>
+        <p class="nav-description">
+          Learn about query parameters and embedding options
+        </p>
+        <button class="nav-button secondary" @click="scrollToDocumentation">
+          View Docs
+        </button>
+      </div>
+    </div>
+    
+    <div class="demo-content" id="documentation">
       <h2 class="section-heading">Embeddable Pricing Table</h2>
       <p class="section-description">
         This pricing table can be embedded in any website using query parameters to customize the display.
@@ -79,6 +102,13 @@ useHead({
     }
   ]
 })
+
+const scrollToDocumentation = () => {
+  const element = document.getElementById('documentation')
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <style scoped>
@@ -93,6 +123,83 @@ useHead({
   font-weight: bold;
   text-align: center;
   margin-bottom: 2rem;
+}
+
+.navigation-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .navigation-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.nav-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.nav-title {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.nav-description {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.nav-button.primary {
+  background: white;
+  color: #667eea;
+}
+
+.nav-button.primary:hover {
+  background: #f8fafc;
+  transform: scale(1.05);
+}
+
+.nav-button.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .demo-content {
