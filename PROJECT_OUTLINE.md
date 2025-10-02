@@ -323,6 +323,453 @@ System must display the following package options:
 
 **Total Project Timeline:** 16-26 business days (3.5-5 weeks)
 
+## React Implementation Alternative
+
+### Overview
+While the current prototype is built with Nuxt 4 + Vue 3, the embeddable pricing tables can also be implemented using React for teams preferring React ecosystem. This section outlines the React-specific implementation approach.
+
+### React Architecture
+
+#### Framework Options
+1. **Next.js 14+ (Recommended)**
+   - App Router with Server Components
+   - Built-in optimization and SEO
+   - Easy deployment with Vercel
+
+2. **Create React App + TypeScript**
+   - Simpler setup for smaller teams
+   - Ejectable for custom configurations
+
+3. **Vite + React**
+   - Faster development experience
+   - Modern build tooling
+   - Smaller bundle sizes
+
+### React Component Structure
+
+#### 1. PricingTable Component (`components/PricingTable.tsx`)
+```typescript
+import React, { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import PricingCard from './PricingCard';
+
+interface Package {
+  name: string;
+  duration: string;
+  originalPrice: number;
+  colorScheme: 'orange' | 'blue' | 'yellow' | 'purple' | 'indigo' | 'green' | 'pink';
+  features: string[];
+}
+
+interface PricingTableProps {
+  course?: string;
+  discountCode?: string;
+  affiliateCode?: string;
+  displayedPackages?: string[];
+}
+
+const PricingTable: React.FC<PricingTableProps> = ({ 
+  course, 
+  discountCode, 
+  affiliateCode, 
+  displayedPackages 
+}) => {
+  const packages = useMemo(() => {
+    // Package generation logic similar to Vue implementation
+    return generatePackagesForCourse(course);
+  }, [course]);
+
+  const discountPercentage = useMemo(() => {
+    return calculateDiscount(discountCode);
+  }, [discountCode]);
+
+  const filteredPackages = useMemo(() => {
+    if (!displayedPackages?.length) return packages;
+    return packages.filter(pkg => displayedPackages.includes(pkg.name));
+  }, [packages, displayedPackages]);
+
+  const handleUpgrade = (packageName: string, price: number) => {
+    // Payment integration logic
+    console.log('Upgrade clicked', { packageName, price, affiliateCode });
+  };
+
+  return (
+    <div className="pricing-table">
+      <div className="container">
+        <h1 className="heading">{course} Pricing Plans</h1>
+        {discountCode && (
+          <div className="discount-banner">
+            Save {discountPercentage}% with code {discountCode}
+          </div>
+        )}
+        <div className="grid">
+          {filteredPackages.map((pkg) => (
+            <PricingCard
+              key={pkg.name}
+              package={pkg}
+              discountPercentage={discountPercentage}
+              onUpgrade={handleUpgrade}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PricingTable;
+```
+
+#### 2. PricingCard Component (`components/PricingCard.tsx`)
+```typescript
+import React from 'react';
+
+interface PricingCardProps {
+  package: Package;
+  discountPercentage: number;
+  onUpgrade: (name: string, price: number) => void;
+}
+
+const PricingCard: React.FC<PricingCardProps> = ({ 
+  package: pkg, 
+  discountPercentage, 
+  onUpgrade 
+}) => {
+  const discountedPrice = Math.round(pkg.originalPrice * (1 - discountPercentage / 100));
+  const savings = pkg.originalPrice - discountedPrice;
+
+  return (
+    <div className={`pricing-card pricing-card-${pkg.colorScheme}`}>
+      <div className="card-header">
+        <h3 className="package-name">{pkg.name}</h3>
+        <p className="duration">{pkg.duration}</p>
+      </div>
+      
+      <div className="pricing">
+        {discountPercentage > 0 && (
+          <p className="original-price">${pkg.originalPrice}</p>
+        )}
+        <p className="current-price">${discountedPrice}</p>
+        {savings > 0 && (
+          <p className="savings">Save ${savings}</p>
+        )}
+      </div>
+
+      <ul className="features">
+        {pkg.features.map((feature, index) => (
+          <li key={index} className="feature-item">
+            <span className="checkmark">✓</span>
+            {feature}
+          </li>
+        ))}
+      </ul>
+
+      <button 
+        className="upgrade-button"
+        onClick={() => onUpgrade(pkg.name, discountedPrice)}
+      >
+        Upgrade Now
+      </button>
+    </div>
+  );
+};
+
+export default PricingCard;
+```
+
+### React Routing Implementation
+
+#### Next.js App Router Structure
+```
+app/
+├── embed/
+│   └── page.tsx          # Main embed route
+├── page.tsx              # Demo/documentation page
+├── components/
+│   ├── PricingTable.tsx
+│   └── PricingCard.tsx
+└── globals.css           # Global styles
+```
+
+#### Embed Route (`app/embed/page.tsx`)
+```typescript
+'use client';
+
+import React, { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import PricingTable from '@/components/PricingTable';
+
+function EmbedContent() {
+  const searchParams = useSearchParams();
+  
+  const course = searchParams.get('course');
+  const discountCode = searchParams.get('discountCode');
+  const affiliateCode = searchParams.get('affiliateCode');
+  const displayedPackages = searchParams.get('displayedPackages')?.split(',');
+
+  if (!course) {
+    return <div>Error: Course parameter is required</div>;
+  }
+
+  return (
+    <PricingTable
+      course={course}
+      discountCode={discountCode || undefined}
+      affiliateCode={affiliateCode || undefined}
+      displayedPackages={displayedPackages}
+    />
+  );
+}
+
+export default function EmbedPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EmbedContent />
+    </Suspense>
+  );
+}
+```
+
+### State Management Options
+
+#### 1. React Context (Simple State)
+```typescript
+interface PricingContextType {
+  course: string | null;
+  discountCode: string | null;
+  affiliateCode: string | null;
+  packages: Package[];
+}
+
+const PricingContext = React.createContext<PricingContextType | undefined>(undefined);
+
+export const PricingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Context implementation
+};
+```
+
+#### 2. Zustand (Recommended for Complex State)
+```typescript
+import { create } from 'zustand';
+
+interface PricingStore {
+  course: string | null;
+  discountCode: string | null;
+  affiliateCode: string | null;
+  packages: Package[];
+  setCourse: (course: string) => void;
+  setDiscountCode: (code: string) => void;
+  // Other actions
+}
+
+export const usePricingStore = create<PricingStore>((set) => ({
+  course: null,
+  discountCode: null,
+  affiliateCode: null,
+  packages: [],
+  setCourse: (course) => set({ course }),
+  setDiscountCode: (discountCode) => set({ discountCode }),
+}));
+```
+
+### Styling Solutions
+
+#### 1. Tailwind CSS (Recommended)
+```bash
+npm install tailwindcss @tailwindcss/typography
+npx tailwindcss init -p
+```
+
+#### 2. Styled Components
+```typescript
+import styled from 'styled-components';
+
+const PricingGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+```
+
+#### 3. CSS Modules
+```typescript
+import styles from './PricingTable.module.css';
+
+const PricingTable = () => (
+  <div className={styles.pricingTable}>
+    {/* Component content */}
+  </div>
+);
+```
+
+### React-Specific Implementation Timeline
+
+#### Phase 1: React Setup & Core Components (6-10 days)
+1. **Project Setup** (1-2 days)
+   - Next.js/CRA setup with TypeScript
+   - ESLint, Prettier configuration
+   - Styling solution implementation
+
+2. **Component Development** (3-4 days)
+   - PricingTable and PricingCard components
+   - TypeScript interfaces and prop types
+   - React hooks for state management
+
+3. **Routing & Query Parameters** (2-3 days)
+   - Next.js App Router or React Router setup
+   - Query parameter parsing with useSearchParams
+   - URL state management
+
+4. **Responsive Design** (1 day)
+   - CSS Grid/Flexbox implementation
+   - Mobile-first responsive design
+   - Cross-browser testing
+
+#### Phase 2: React-Specific Features (3-4 days)
+1. **State Management** (1-2 days)
+   - Context API or Zustand implementation
+   - Global state for pricing data
+   - Persistent state handling
+
+2. **Performance Optimization** (1-2 days)
+   - React.memo for component optimization
+   - useMemo and useCallback for expensive operations
+   - Lazy loading and code splitting
+
+### React Dependencies
+
+#### Core Dependencies
+```json
+{
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^14.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "prettier": "^3.0.0"
+  }
+}
+```
+
+#### Optional Dependencies
+```json
+{
+  "optionalDependencies": {
+    "tailwindcss": "^3.4.0",
+    "zustand": "^4.4.0",
+    "framer-motion": "^10.16.0",
+    "react-query": "^3.39.0"
+  }
+}
+```
+
+### React Testing Strategy
+
+#### Unit Testing with Jest & React Testing Library
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+import PricingCard from '../PricingCard';
+
+describe('PricingCard', () => {
+  const mockPackage = {
+    name: 'Bronze',
+    duration: '3 months',
+    originalPrice: 299,
+    colorScheme: 'orange' as const,
+    features: ['Feature 1', 'Feature 2']
+  };
+
+  test('displays package information correctly', () => {
+    render(
+      <PricingCard 
+        package={mockPackage}
+        discountPercentage={0}
+        onUpgrade={jest.fn()}
+      />
+    );
+    
+    expect(screen.getByText('Bronze')).toBeInTheDocument();
+    expect(screen.getByText('$299')).toBeInTheDocument();
+  });
+
+  test('handles upgrade button click', () => {
+    const mockOnUpgrade = jest.fn();
+    render(
+      <PricingCard 
+        package={mockPackage}
+        discountPercentage={0}
+        onUpgrade={mockOnUpgrade}
+      />
+    );
+    
+    fireEvent.click(screen.getByText('Upgrade Now'));
+    expect(mockOnUpgrade).toHaveBeenCalledWith('Bronze', 299);
+  });
+});
+```
+
+### React Deployment Options
+
+#### 1. Vercel (Next.js Recommended)
+```bash
+npm install -g vercel
+vercel --prod
+```
+
+#### 2. Netlify
+```bash
+npm run build
+netlify deploy --prod --dir=build
+```
+
+#### 3. AWS Amplify
+- GitHub integration
+- Automatic deployments
+- Built-in CDN
+
+### React vs Vue Comparison
+
+| Aspect | Vue 3 (Current) | React Alternative |
+|--------|-----------------|-------------------|
+| **Learning Curve** | Gentle, template-based | Steeper, JSX-based |
+| **Performance** | Excellent with reactivity | Excellent with optimizations |
+| **Ecosystem** | Smaller but mature | Large and comprehensive |
+| **TypeScript** | Great integration | Excellent native support |
+| **Bundle Size** | Smaller base | Larger but optimizable |
+| **Developer Tools** | Vue DevTools | React DevTools |
+| **Team Preference** | Vue specialists | React specialists |
+
+### Migration Strategy (Vue to React)
+
+If migrating from the current Vue prototype:
+
+1. **Direct Translation** (Recommended)
+   - Convert Vue components to React functional components
+   - Replace Vue Composition API with React hooks
+   - Maintain same prop interfaces and logic
+
+2. **Gradual Migration**
+   - Use Vue components in React via vue-in-react wrapper
+   - Migrate components incrementally
+   - Maintain parallel codebases temporarily
+
+3. **Complete Rewrite**
+   - Start fresh with React best practices
+   - Opportunity to improve architecture
+   - Longer timeline but cleaner result
+
 ## Post-Launch Considerations
 
 ### Maintenance
