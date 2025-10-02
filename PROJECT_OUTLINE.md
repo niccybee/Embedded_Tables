@@ -326,17 +326,21 @@ System must display the following package options:
 ## React Implementation Alternative
 
 ### Overview
+
 While the current prototype is built with Nuxt 4 + Vue 3, the embeddable pricing tables can also be implemented using React for teams preferring React ecosystem. This section outlines the React-specific implementation approach.
 
 ### React Architecture
 
 #### Framework Options
+
 1. **Next.js 14+ (Recommended)**
+
    - App Router with Server Components
    - Built-in optimization and SEO
    - Easy deployment with Vercel
 
 2. **Create React App + TypeScript**
+
    - Simpler setup for smaller teams
    - Ejectable for custom configurations
 
@@ -348,16 +352,24 @@ While the current prototype is built with Nuxt 4 + Vue 3, the embeddable pricing
 ### React Component Structure
 
 #### 1. PricingTable Component (`components/PricingTable.tsx`)
+
 ```typescript
-import React, { useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import PricingCard from './PricingCard';
+import React, { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import PricingCard from "./PricingCard";
 
 interface Package {
   name: string;
   duration: string;
   originalPrice: number;
-  colorScheme: 'orange' | 'blue' | 'yellow' | 'purple' | 'indigo' | 'green' | 'pink';
+  colorScheme:
+    | "orange"
+    | "blue"
+    | "yellow"
+    | "purple"
+    | "indigo"
+    | "green"
+    | "pink";
   features: string[];
 }
 
@@ -368,11 +380,11 @@ interface PricingTableProps {
   displayedPackages?: string[];
 }
 
-const PricingTable: React.FC<PricingTableProps> = ({ 
-  course, 
-  discountCode, 
-  affiliateCode, 
-  displayedPackages 
+const PricingTable: React.FC<PricingTableProps> = ({
+  course,
+  discountCode,
+  affiliateCode,
+  displayedPackages,
 }) => {
   const packages = useMemo(() => {
     // Package generation logic similar to Vue implementation
@@ -385,12 +397,12 @@ const PricingTable: React.FC<PricingTableProps> = ({
 
   const filteredPackages = useMemo(() => {
     if (!displayedPackages?.length) return packages;
-    return packages.filter(pkg => displayedPackages.includes(pkg.name));
+    return packages.filter((pkg) => displayedPackages.includes(pkg.name));
   }, [packages, displayedPackages]);
 
   const handleUpgrade = (packageName: string, price: number) => {
     // Payment integration logic
-    console.log('Upgrade clicked', { packageName, price, affiliateCode });
+    console.log("Upgrade clicked", { packageName, price, affiliateCode });
   };
 
   return (
@@ -421,8 +433,9 @@ export default PricingTable;
 ```
 
 #### 2. PricingCard Component (`components/PricingCard.tsx`)
+
 ```typescript
-import React from 'react';
+import React from "react";
 
 interface PricingCardProps {
   package: Package;
@@ -430,12 +443,14 @@ interface PricingCardProps {
   onUpgrade: (name: string, price: number) => void;
 }
 
-const PricingCard: React.FC<PricingCardProps> = ({ 
-  package: pkg, 
-  discountPercentage, 
-  onUpgrade 
+const PricingCard: React.FC<PricingCardProps> = ({
+  package: pkg,
+  discountPercentage,
+  onUpgrade,
 }) => {
-  const discountedPrice = Math.round(pkg.originalPrice * (1 - discountPercentage / 100));
+  const discountedPrice = Math.round(
+    pkg.originalPrice * (1 - discountPercentage / 100)
+  );
   const savings = pkg.originalPrice - discountedPrice;
 
   return (
@@ -444,15 +459,13 @@ const PricingCard: React.FC<PricingCardProps> = ({
         <h3 className="package-name">{pkg.name}</h3>
         <p className="duration">{pkg.duration}</p>
       </div>
-      
+
       <div className="pricing">
         {discountPercentage > 0 && (
           <p className="original-price">${pkg.originalPrice}</p>
         )}
         <p className="current-price">${discountedPrice}</p>
-        {savings > 0 && (
-          <p className="savings">Save ${savings}</p>
-        )}
+        {savings > 0 && <p className="savings">Save ${savings}</p>}
       </div>
 
       <ul className="features">
@@ -464,7 +477,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
         ))}
       </ul>
 
-      <button 
+      <button
         className="upgrade-button"
         onClick={() => onUpgrade(pkg.name, discountedPrice)}
       >
@@ -480,6 +493,7 @@ export default PricingCard;
 ### React Routing Implementation
 
 #### Next.js App Router Structure
+
 ```
 app/
 ├── embed/
@@ -492,20 +506,21 @@ app/
 ```
 
 #### Embed Route (`app/embed/page.tsx`)
-```typescript
-'use client';
 
-import React, { Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import PricingTable from '@/components/PricingTable';
+```typescript
+"use client";
+
+import React, { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import PricingTable from "@/components/PricingTable";
 
 function EmbedContent() {
   const searchParams = useSearchParams();
-  
-  const course = searchParams.get('course');
-  const discountCode = searchParams.get('discountCode');
-  const affiliateCode = searchParams.get('affiliateCode');
-  const displayedPackages = searchParams.get('displayedPackages')?.split(',');
+
+  const course = searchParams.get("course");
+  const discountCode = searchParams.get("discountCode");
+  const affiliateCode = searchParams.get("affiliateCode");
+  const displayedPackages = searchParams.get("displayedPackages")?.split(",");
 
   if (!course) {
     return <div>Error: Course parameter is required</div>;
@@ -533,6 +548,7 @@ export default function EmbedPage() {
 ### State Management Options
 
 #### 1. React Context (Simple State)
+
 ```typescript
 interface PricingContextType {
   course: string | null;
@@ -541,16 +557,21 @@ interface PricingContextType {
   packages: Package[];
 }
 
-const PricingContext = React.createContext<PricingContextType | undefined>(undefined);
+const PricingContext = React.createContext<PricingContextType | undefined>(
+  undefined
+);
 
-export const PricingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const PricingProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   // Context implementation
 };
 ```
 
 #### 2. Zustand (Recommended for Complex State)
+
 ```typescript
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface PricingStore {
   course: string | null;
@@ -575,14 +596,16 @@ export const usePricingStore = create<PricingStore>((set) => ({
 ### Styling Solutions
 
 #### 1. Tailwind CSS (Recommended)
+
 ```bash
 npm install tailwindcss @tailwindcss/typography
 npx tailwindcss init -p
 ```
 
 #### 2. Styled Components
+
 ```typescript
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const PricingGrid = styled.div`
   display: grid;
@@ -597,30 +620,33 @@ const PricingGrid = styled.div`
 ```
 
 #### 3. CSS Modules
+
 ```typescript
-import styles from './PricingTable.module.css';
+import styles from "./PricingTable.module.css";
 
 const PricingTable = () => (
-  <div className={styles.pricingTable}>
-    {/* Component content */}
-  </div>
+  <div className={styles.pricingTable}>{/* Component content */}</div>
 );
 ```
 
 ### React-Specific Implementation Timeline
 
 #### Phase 1: React Setup & Core Components (6-10 days)
+
 1. **Project Setup** (1-2 days)
+
    - Next.js/CRA setup with TypeScript
    - ESLint, Prettier configuration
    - Styling solution implementation
 
 2. **Component Development** (3-4 days)
+
    - PricingTable and PricingCard components
    - TypeScript interfaces and prop types
    - React hooks for state management
 
 3. **Routing & Query Parameters** (2-3 days)
+
    - Next.js App Router or React Router setup
    - Query parameter parsing with useSearchParams
    - URL state management
@@ -631,7 +657,9 @@ const PricingTable = () => (
    - Cross-browser testing
 
 #### Phase 2: React-Specific Features (3-4 days)
+
 1. **State Management** (1-2 days)
+
    - Context API or Zustand implementation
    - Global state for pricing data
    - Persistent state handling
@@ -644,6 +672,7 @@ const PricingTable = () => (
 ### React Dependencies
 
 #### Core Dependencies
+
 ```json
 {
   "dependencies": {
@@ -664,6 +693,7 @@ const PricingTable = () => (
 ```
 
 #### Optional Dependencies
+
 ```json
 {
   "optionalDependencies": {
@@ -678,44 +708,45 @@ const PricingTable = () => (
 ### React Testing Strategy
 
 #### Unit Testing with Jest & React Testing Library
-```typescript
-import { render, screen, fireEvent } from '@testing-library/react';
-import PricingCard from '../PricingCard';
 
-describe('PricingCard', () => {
+```typescript
+import { render, screen, fireEvent } from "@testing-library/react";
+import PricingCard from "../PricingCard";
+
+describe("PricingCard", () => {
   const mockPackage = {
-    name: 'Bronze',
-    duration: '3 months',
+    name: "Bronze",
+    duration: "3 months",
     originalPrice: 299,
-    colorScheme: 'orange' as const,
-    features: ['Feature 1', 'Feature 2']
+    colorScheme: "orange" as const,
+    features: ["Feature 1", "Feature 2"],
   };
 
-  test('displays package information correctly', () => {
+  test("displays package information correctly", () => {
     render(
-      <PricingCard 
+      <PricingCard
         package={mockPackage}
         discountPercentage={0}
         onUpgrade={jest.fn()}
       />
     );
-    
-    expect(screen.getByText('Bronze')).toBeInTheDocument();
-    expect(screen.getByText('$299')).toBeInTheDocument();
+
+    expect(screen.getByText("Bronze")).toBeInTheDocument();
+    expect(screen.getByText("$299")).toBeInTheDocument();
   });
 
-  test('handles upgrade button click', () => {
+  test("handles upgrade button click", () => {
     const mockOnUpgrade = jest.fn();
     render(
-      <PricingCard 
+      <PricingCard
         package={mockPackage}
         discountPercentage={0}
         onUpgrade={mockOnUpgrade}
       />
     );
-    
-    fireEvent.click(screen.getByText('Upgrade Now'));
-    expect(mockOnUpgrade).toHaveBeenCalledWith('Bronze', 299);
+
+    fireEvent.click(screen.getByText("Upgrade Now"));
+    expect(mockOnUpgrade).toHaveBeenCalledWith("Bronze", 299);
   });
 });
 ```
@@ -723,44 +754,49 @@ describe('PricingCard', () => {
 ### React Deployment Options
 
 #### 1. Vercel (Next.js Recommended)
+
 ```bash
 npm install -g vercel
 vercel --prod
 ```
 
 #### 2. Netlify
+
 ```bash
 npm run build
 netlify deploy --prod --dir=build
 ```
 
 #### 3. AWS Amplify
+
 - GitHub integration
 - Automatic deployments
 - Built-in CDN
 
 ### React vs Vue Comparison
 
-| Aspect | Vue 3 (Current) | React Alternative |
-|--------|-----------------|-------------------|
-| **Learning Curve** | Gentle, template-based | Steeper, JSX-based |
-| **Performance** | Excellent with reactivity | Excellent with optimizations |
-| **Ecosystem** | Smaller but mature | Large and comprehensive |
-| **TypeScript** | Great integration | Excellent native support |
-| **Bundle Size** | Smaller base | Larger but optimizable |
-| **Developer Tools** | Vue DevTools | React DevTools |
-| **Team Preference** | Vue specialists | React specialists |
+| Aspect              | Vue 3 (Current)           | React Alternative            |
+| ------------------- | ------------------------- | ---------------------------- |
+| **Learning Curve**  | Gentle, template-based    | Steeper, JSX-based           |
+| **Performance**     | Excellent with reactivity | Excellent with optimizations |
+| **Ecosystem**       | Smaller but mature        | Large and comprehensive      |
+| **TypeScript**      | Great integration         | Excellent native support     |
+| **Bundle Size**     | Smaller base              | Larger but optimizable       |
+| **Developer Tools** | Vue DevTools              | React DevTools               |
+| **Team Preference** | Vue specialists           | React specialists            |
 
 ### Migration Strategy (Vue to React)
 
 If migrating from the current Vue prototype:
 
 1. **Direct Translation** (Recommended)
+
    - Convert Vue components to React functional components
    - Replace Vue Composition API with React hooks
    - Maintain same prop interfaces and logic
 
 2. **Gradual Migration**
+
    - Use Vue components in React via vue-in-react wrapper
    - Migrate components incrementally
    - Maintain parallel codebases temporarily
