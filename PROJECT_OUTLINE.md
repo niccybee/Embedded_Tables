@@ -62,21 +62,10 @@ interface QueryParams {
 
 **Key Features:**
 
-- 7 distinct color schemes for package differentiation
 - Responsive card layout with feature lists
 - Upgrade button with payment integration hooks
 - Price display with discount calculations
 - Feature highlighting and CTAs
-
-**Color Schemes:**
-
-- Orange (Bronze packages)
-- Blue (Silver packages)
-- Yellow (Gold packages)
-- Purple (Express packages)
-- Indigo (Express Plus)
-- Green (Speaking Intensive)
-- Pink (Writing Intensive)
 
 ### API Endpoints
 
